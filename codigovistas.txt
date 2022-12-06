@@ -1,0 +1,43 @@
+CREATE VIEW v_clientes AS
+SELECT cliente.idcliente, cliente.DNI, cliente.nombre, cliente.telefono, cliente.direccion, 
+cliente.idtipo, tipocliente.persona FROM cliente INNER JOIN tipocliente ON cliente.idtipo = tipocliente.idtipo
+
+CREATE VIEW v_producto AS 
+SELECT productos.idproducto, productos.nombre, productos.Marca, productos.descripcion, productos.idalmacenamiento, productos.idram, productos.pu, productos.stock, almacenamiento.capacidad, ram.capacidad AS capacidad1
+FROM productos INNER JOIN almacenamiento ON productos.idalmacenamiento = almacenamiento.idalmacenamiento INNER JOIN ram ON productos.idram = ram.idram
+
+
+CREATE VIEW v_producto01 AS 
+SELECT productos.idproducto, productos.nombre, productos.Marca, productos.descripcion, productos.idalmacenamiento, productos.idram, productos.pu, productos.stock, almacenamiento.capacidad, ram.capacidad AS capacidad1, imagenes_producto.url
+FROM ((productos INNER JOIN almacenamiento ON productos.idalmacenamiento = almacenamiento.idalmacenamiento INNER JOIN ram ON productos.idram = ram.idram)
+LEFT JOIN imagenes_producto ON productos.idproducto=imagenes_producto.idproducto)
+GROUP BY productos.idproducto, productos.nombre, productos.Marca, productos.descripcion, productos.idalmacenamiento, productos.idram, productos.pu, productos.stock, almacenamiento.capacidad, ram.capacidad AS capacidad1
+
+
+
+
+Vista modificada:
+
+CREATE VIEW v_producto AS 
+SELECT productos.idproducto, productos.nombre, productos.idmarca, productos.descripcion, productos.idalmacenamiento, productos.idram, productos.pu, productos.stock, marcas.marca, almacenamiento.capacidad, ram.capacidad1
+FROM productos INNER JOIN marcas ON productos.idmarca = marcas.idmarca INNER JOIN almacenamiento ON productos.idalmacenamiento = almacenamiento.idalmacenamiento INNER JOIN ram ON productos.idram = ram.idram
+
+Vista Modificada:
+
+CREATE VIEW v_producto01 AS 
+SELECT productos.idproducto, productos.nombre, productos.idmarca, productos.descripcion, productos.idalmacenamiento, productos.idram, productos.pu, productos.stock, marcas.marca, almacenamiento.capacidad, ram.capacidad1, imagenes_producto.url
+FROM ((productos INNER JOIN marcas ON productos.idmarca =marcas.idmarca INNER JOIN almacenamiento ON productos.idalmacenamiento = almacenamiento.idalmacenamiento INNER JOIN ram ON productos.idram = ram.idram)
+LEFT JOIN imagenes_producto ON productos.idproducto=imagenes_producto.idproducto)
+GROUP BY productos.idproducto, productos.nombre, productos.idmarca, productos.descripcion, productos.idalmacenamiento, productos.idram, productos.pu, productos.stock, marcas.marca, almacenamiento.capacidad, ram.capacidad1
+
+vista grafico
+
+CREATE VIEW v_graf_modelos_x_marca AS 
+
+SELECT marcas.marca AS marca, COUNT(productos.idproducto) AS cant FROM ( marcas INNER JOIN productos ON (marcas.idmarca = productos.idmarca)) GROUP BY marcas.marca
+
+
+Vista Listapocostock
+
+CREATE VIEW v_Listapocostock AS
+SELECT productos.idproducto, productos.nombre, productos.stock FROM productos WHERE productos.stock<5;

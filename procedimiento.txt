@@ -1,0 +1,22 @@
+SELECT boletas.*, SUM(detallesboletas.subtotal) AS TotalVentasMes
+FROM boletas INNER JOIN detallesboletas ON boletas.idboleta=detallesboletas.idboleta
+WHERE year(boletas.fecha)=2022 and month(boletas.fecha)=11 AND day(boletas.fecha)=12
+LIMIT 100;
+
+
+
+
+
+SELECT COUNT(productos.nombre) AS ProductosPocoStock, productos.stock FROM productos WHERE productos.stock<=5
+
+
+
+
+SELECT productos.idproducto, productos.nombre, productos.stock FROM productos WHERE productos.stock<=5
+
+
+CREATE VIEW v_Reportes AS
+SELECT COUNT(productos.idproducto) AS ProductosPocoStock FROM productos WHERE productos.stock<=5
+
+
+
